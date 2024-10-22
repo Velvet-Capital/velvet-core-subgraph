@@ -16,6 +16,33 @@ export function handlePortfolioCreated(event: PortfolioInfoEvent): void {
     event.transaction.hash.concatI32(event.logIndex.toI32()).toHexString()
   );
 
+  // Create a string representation of portfolioData
+  let portfolioDataString =
+    `portfolio:${event.params.portfolioData.portfolio.toHexString()},` +
+    `tokenExclusionManager:${event.params.portfolioData.tokenExclusionManager.toHexString()},` +
+    `rebalancing:${event.params.portfolioData.rebalancing.toHexString()},` +
+    `assetManagementConfig:${event.params.portfolioData.assetManagementConfig.toHexString()},` +
+    `feeModule:${event.params.portfolioData.feeModule.toHexString()},` +
+    `gnosisModule:${event.params.portfolioData.gnosisModule.toHexString()}`;
+
+  entity.portfolioData = portfolioDataString;
+
+  // Create PortfolioData instance
+  let portfolioData = new PortfoliolInfo(event.transaction.hash.toHexString());
+  portfolioData.portfolio = event.params.portfolioData.portfolio;
+  portfolioData.tokenExclusionManager =
+    event.params.portfolioData.tokenExclusionManager;
+  portfolioData.rebalancing = event.params.portfolioData.rebalancing;
+  portfolioData.owner = event.params._owner;
+  portfolioData.assetManagementConfig =
+    event.params.portfolioData.assetManagementConfig;
+  portfolioData.feeModule = event.params.portfolioData.feeModule;
+  portfolioData.vaultAddress = event.params.portfolioData.vaultAddress;
+  portfolioData.gnosisModule = event.params.portfolioData.gnosisModule;
+  portfolioData.save();
+
+  entity.portfolioData = portfolioData.id;
+
   entity.portfolioId = event.params.portfolioId;
   entity.name = event.params._name;
   entity.symbol = event.params._symbol;
@@ -23,7 +50,9 @@ export function handlePortfolioCreated(event: PortfolioInfoEvent): void {
   entity.accessController = event.params._accessController;
   entity.isPublicPortfolio = event.params.isPublicPortfolio;
 
-  entity.save();
+  entity.blockNumber = event.block.number;
+  entity.blockTimestamp = event.block.timestamp;
+  entity.transactionHash = event.transaction.hash;
 
   entity.save();
 

@@ -1,6 +1,6 @@
 type PortfolioInfo @entity(immutable: true) {
   id: ID!
-  portfolioData: PortfoliolInfo!
+  portfolioData: PortfoliolInfo
   portfolioId: BigInt!
   name: String!
   symbol: String!
@@ -22,7 +22,6 @@ type PortfoliolInfo @entity {
   feeModule: Bytes!
   vaultAddress: Bytes!
   gnosisModule: Bytes!
-  index: BigInt!
 }
 
 type PortfolioFactory @entity {
