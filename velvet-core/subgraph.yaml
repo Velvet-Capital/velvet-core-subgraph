@@ -70,9 +70,6 @@ templates:
       abis:
         - name: TokenExclusionManager
           file: ./abis/TokenExclusionManager.json
-      eventHandlers:
-        - event: TokenExcluded(address)
-          handler: handleTokenExcluded
 
   - name: Rebalancing
     kind: ethereum/contract
@@ -89,9 +86,6 @@ templates:
       abis:
         - name: Rebalancing
           file: ./abis/Rebalancing.json
-      eventHandlers:
-        - event: RebalanceExecuted(address,uint256)
-          handler: handleRebalanceExecuted
 
   - name: AssetManagementConfig
     kind: ethereum/contract
@@ -104,13 +98,64 @@ templates:
       language: wasm/assemblyscript
       file: ./src/asset-management-config.ts
       entities:
-        - FeeUpdated
+        - ChangedPortfolioToPublic
+        - DeleteProposedEntryAndExitFee
+        - DeleteProposedManagementFee
+        - DeleteProposedPerformanceFee
+        - InitialPortfolioAmountUpdated
+        - MinPortfolioTokenHoldingAmountUpdated
+        - ProposeEntryAndExitFee
+        - ProposeManagementFee
+        - ProposePerformanceFee
+        - TokenWhitelisted
+        - TokensRemovedFromWhitelist
+        - TransferabilityUpdated
+        - TreasuryUpdated
+        - UpdateEntryAndExitFee
+        - UpdateManagementFee
+        - UpdatePerformanceFee
+        - UserRemovedFromWhitelist
+        - UserWhitelisted
       abis:
         - name: AssetManagementConfig
           file: ./abis/AssetManagementConfig.json
       eventHandlers:
-        - event: FeeUpdated(uint256,uint256,uint256,uint256)
-          handler: handleFeeUpdated
+        - event: ChangedPortfolioToPublic(indexed bool,indexed bool)
+          handler: handleChangedPortfolioToPublic
+        - event: DeleteProposedEntryAndExitFee()
+          handler: handleDeleteProposedEntryAndExitFee
+        - event: DeleteProposedManagementFee()
+          handler: handleDeleteProposedManagementFee
+        - event: DeleteProposedPerformanceFee()
+          handler: handleDeleteProposedPerformanceFee
+        - event: InitialPortfolioAmountUpdated(indexed uint256)
+          handler: handleInitialPortfolioAmountUpdated
+        - event: MinPortfolioTokenHoldingAmountUpdated(indexed uint256)
+          handler: handleMinPortfolioTokenHoldingAmountUpdated
+        - event: ProposeEntryAndExitFee(indexed uint256,indexed uint256)
+          handler: handleProposeEntryAndExitFee
+        - event: ProposeManagementFee(indexed uint256)
+          handler: handleProposeManagementFee
+        - event: ProposePerformanceFee(indexed uint256)
+          handler: handleProposePerformanceFee
+        - event: TokenWhitelisted(address[])
+          handler: handleTokenWhitelisted
+        - event: TokensRemovedFromWhitelist(address[])
+          handler: handleTokensRemovedFromWhitelist
+        - event: TransferabilityUpdated(indexed bool,indexed bool)
+          handler: handleTransferabilityUpdated
+        - event: TreasuryUpdated(indexed address)
+          handler: handleTreasuryUpdated
+        - event: UpdateEntryAndExitFee(indexed uint256,indexed uint256)
+          handler: handleUpdateEntryAndExitFee
+        - event: UpdateManagementFee(indexed uint256)
+          handler: handleUpdateManagementFee
+        - event: UpdatePerformanceFee(indexed uint256)
+          handler: handleUpdatePerformanceFee
+        - event: UserRemovedFromWhitelist(address[])
+          handler: handleUserRemovedFromWhitelist
+        - event: UserWhitelisted(address[])
+          handler: handleUserWhitelisted
 
   - name: FeeModule
     kind: ethereum/contract
@@ -150,6 +195,3 @@ templates:
       abis:
         - name: VelvetSafeModule
           file: ./abis/VelvetSafeModule.json
-      eventHandlers:
-        - event: ModuleSetUp(address)
-          handler: handleModuleSetUp
