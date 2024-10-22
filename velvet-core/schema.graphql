@@ -69,19 +69,80 @@ type FeeUpdated @entity {
   transactionHash: Bytes!
 }
 
-type FeesCollected @entity {
+type ModuleSetUp @entity {
   id: ID!
-  amount1: BigInt!
-  amount2: BigInt!
-  amount3: BigInt!
+  module: Bytes!
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
 }
 
-type ModuleSetUp @entity {
+# --- PORTFOLIO EVENTS ---
+
+type PublicSwapEnabled @entity {
   id: ID!
-  module: Bytes!
+  portfolio: Bytes!
+  timestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type Deposit @entity {
+  id: ID!
+  portfolio: Bytes!
+  user: Bytes!
+  mintedAmount: BigInt!
+  userBalanceAfterDeposit: BigInt!
+  timestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type Withdrawal @entity {
+  id: ID!
+  user: Bytes!
+  burnedAmount: BigInt!
+  portfolio: Bytes!
+  portfolioTokens: [Bytes!]!
+  userBalanceAfterWithdrawal: BigInt!
+  userWithdrawalAmounts: [BigInt!]!
+  timestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type UserDepositedAmount @entity {
+  id: ID!
+  depositedAmounts: [BigInt!]!
+  portfolioTokens: [Bytes!]!
+  timestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+# --- FEE MODULE EVENTS ---
+
+type FeesToBeMinted @entity(immutable: true) {
+  id: ID!
+  assetManagementTreasury: Bytes!
+  protocolTreasury: Bytes!
+  protocolFeeAmount: BigInt!
+  managerFeeAmount: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type ManagementFeeCalculated @entity(immutable: true) {
+  id: ID!
+  protocolStreamingFeeAmount: BigInt!
+  managementFeeAmount: BigInt!
+  protocolFeeCutAmount: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type EntryExitFeeCharged @entity(immutable: true) {
+  id: ID!
+  entryExitProtocolFeeAmount: BigInt!
+  entryExitAssetManagerFeeAmount: BigInt!
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!

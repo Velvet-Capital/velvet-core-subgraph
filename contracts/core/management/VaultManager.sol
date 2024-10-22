@@ -1,19 +1,19 @@
 // SPDX-License-Identifier: BUSL-1.1
 pragma solidity 0.8.17;
 
-import {IERC20Upgradeable} from "@openzeppelin/contracts-upgradeable-4.9.6/token/ERC20/IERC20Upgradeable.sol";
-import {ReentrancyGuardUpgradeable} from "@openzeppelin/contracts-upgradeable-4.9.6/security/ReentrancyGuardUpgradeable.sol";
-import {TransferHelper} from "@uniswap/lib/contracts/libraries/TransferHelper.sol";
-import {IVelvetSafeModule} from "../../vault/IVelvetSafeModule.sol";
+import { IERC20Upgradeable } from "@openzeppelin/contracts-upgradeable-4.9.6/token/ERC20/IERC20Upgradeable.sol";
+import { ReentrancyGuardUpgradeable } from "@openzeppelin/contracts-upgradeable-4.9.6/security/ReentrancyGuardUpgradeable.sol";
+import { TransferHelper } from "@uniswap/lib/contracts/libraries/TransferHelper.sol";
+import { IVelvetSafeModule } from "../../vault/IVelvetSafeModule.sol";
 
-import {IPortfolio} from "../interfaces/IPortfolio.sol";
+import { IPortfolio } from "../interfaces/IPortfolio.sol";
 
-import {FeeManager} from "./FeeManager.sol";
-import {VaultConfig, ErrorLibrary} from "../config/VaultConfig.sol";
-import {VaultCalculations, Dependencies} from "../calculations/VaultCalculations.sol";
-import {MathUtils} from "../calculations/MathUtils.sol";
-import {PortfolioToken} from "../token/PortfolioToken.sol";
-import {IAllowanceTransfer} from "../interfaces/IAllowanceTransfer.sol";
+import { FeeManager } from "./FeeManager.sol";
+import { VaultConfig, ErrorLibrary } from "../config/VaultConfig.sol";
+import { VaultCalculations, Dependencies } from "../calculations/VaultCalculations.sol";
+import { MathUtils } from "../calculations/MathUtils.sol";
+import { PortfolioToken } from "../token/PortfolioToken.sol";
+import { IAllowanceTransfer } from "../interfaces/IAllowanceTransfer.sol";
 
 /**
  * @title VaultManager
