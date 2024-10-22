@@ -1,23 +1,88 @@
-type AdminChanged @entity(immutable: true) {
-  id: Bytes!
-  previousAdmin: Bytes! # address
-  newAdmin: Bytes! # address
+type PortfolioInfo @entity(immutable: true) {
+  id: ID!
+  portfolioData: PortfoliolInfo!
+  portfolioId: BigInt!
+  name: String!
+  symbol: String!
+  owner: Bytes!
+  accessController: Bytes!
+  isPublicPortfolio: Boolean!
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
 }
 
-type BeaconUpgraded @entity(immutable: true) {
-  id: Bytes!
-  beacon: Bytes! # address
+type PortfoliolInfo @entity {
+  id: ID!
+  portfolio: Bytes!
+  tokenExclusionManager: Bytes!
+  rebalancing: Bytes!
+  owner: Bytes!
+  assetManagementConfig: Bytes!
+  feeModule: Bytes!
+  vaultAddress: Bytes!
+  gnosisModule: Bytes!
+  index: BigInt!
+}
+
+type PortfolioFactory @entity {
+  id: ID!
+  portfolioInfoList: [PortfoliolInfo!]! # This represents the PortfolioInfolList
+  protocolConfig: Bytes!
+  portfolioCreationPause: Boolean!
+}
+
+type Transfer @entity {
+  id: ID!
+  from: Bytes!
+  to: Bytes!
+  value: BigInt!
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
 }
 
-type Upgraded @entity(immutable: true) {
-  id: Bytes!
-  implementation: Bytes! # address
+type TokenExcluded @entity {
+  id: ID!
+  token: Bytes!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type RebalanceExecuted @entity {
+  id: ID!
+  executor: Bytes!
+  timestamp: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type FeeUpdated @entity {
+  id: ID!
+  param1: BigInt!
+  param2: BigInt!
+  param3: BigInt!
+  param4: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type FeesCollected @entity {
+  id: ID!
+  amount1: BigInt!
+  amount2: BigInt!
+  amount3: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type ModuleSetUp @entity {
+  id: ID!
+  module: Bytes!
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!

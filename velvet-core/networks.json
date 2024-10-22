@@ -1,6 +1,6 @@
 {
   "base": {
-    "ERC1967Proxy": {
+    "PortfolioFactory": {
       "address": "0xf93659fb357899e092813bc3a2959ceDb3282a7f",
       "startBlock": 16686405
     }

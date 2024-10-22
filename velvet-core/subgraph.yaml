@@ -1,15 +1,14 @@
-specVersion: 1.0.0
-indexerHints:
-  prune: auto
+specVersion: 0.0.5
+
 schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum
-    name: ERC1967Proxy
+    name: PortfolioFactory
     network: base
     source:
       address: "0xf93659fb357899e092813bc3a2959ceDb3282a7f"
-      abi: ERC1967Proxy
+      abi: PortfolioFactory
       startBlock: 16686405
     mapping:
       kind: ethereum/events
@@ -19,14 +18,126 @@ dataSources:
         - AdminChanged
         - BeaconUpgraded
         - Upgraded
+        - PortfolioInfo
       abis:
-        - name: ERC1967Proxy
-          file: ./abis/ERC1967Proxy.json
+        - name: PortfolioFactory
+          file: ./abis/PortfolioFactory.json
       eventHandlers:
-        - event: AdminChanged(address,address)
-          handler: handleAdminChanged
-        - event: BeaconUpgraded(indexed address)
-          handler: handleBeaconUpgraded
-        - event: Upgraded(indexed address)
-          handler: handleUpgraded
-      file: ./src/erc-1967-proxy.ts
+        - event: PortfolioInfo((address,address,address,address,address,address,address,address),indexed uint256,string,string,indexed address,indexed address,bool)
+          handler: handlePortfolioCreated
+      file: ./src/portfolio-factory.ts
+
+templates:
+  - name: Portfolio
+    kind: ethereum/contract
+    network: base
+    source:
+      abi: Portfolio
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/portfolio.ts
+      entities:
+        - Transfer
+      abis:
+        - name: Portfolio
+          file: ./abis/Portfolio.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+
+  - name: TokenExclusionManager
+    kind: ethereum/contract
+    network: base
+    source:
+      abi: TokenExclusionManager
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/token-exclusion-manager.ts
+      entities:
+        - TokenExcluded
+      abis:
+        - name: TokenExclusionManager
+          file: ./abis/TokenExclusionManager.json
+      eventHandlers:
+        - event: TokenExcluded(address)
+          handler: handleTokenExcluded
+
+  - name: Rebalancing
+    kind: ethereum/contract
+    network: base
+    source:
+      abi: Rebalancing
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/rebalancing.ts
+      entities:
+        - RebalanceExecuted
+      abis:
+        - name: Rebalancing
+          file: ./abis/Rebalancing.json
+      eventHandlers:
+        - event: RebalanceExecuted(address,uint256)
+          handler: handleRebalanceExecuted
+
+  - name: AssetManagementConfig
+    kind: ethereum/contract
+    network: base
+    source:
+      abi: AssetManagementConfig
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/asset-management-config.ts
+      entities:
+        - FeeUpdated
+      abis:
+        - name: AssetManagementConfig
+          file: ./abis/AssetManagementConfig.json
+      eventHandlers:
+        - event: FeeUpdated(uint256,uint256,uint256,uint256)
+          handler: handleFeeUpdated
+
+  - name: FeeModule
+    kind: ethereum/contract
+    network: base
+    source:
+      abi: FeeModule
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/fee-module.ts
+      entities:
+        - FeesCollected
+      abis:
+        - name: FeeModule
+          file: ./abis/FeeModule.json
+      eventHandlers:
+        - event: FeesCollected(uint256,uint256,uint256)
+          handler: handleFeesCollected
+
+  - name: VelvetSafeModule
+    kind: ethereum/contract
+    network: base
+    source:
+      abi: VelvetSafeModule
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/velvet-safe-module.ts
+      entities:
+        - ModuleSetUp
+      abis:
+        - name: VelvetSafeModule
+          file: ./abis/VelvetSafeModule.json
+      eventHandlers:
+        - event: ModuleSetUp(address)
+          handler: handleModuleSetUp
