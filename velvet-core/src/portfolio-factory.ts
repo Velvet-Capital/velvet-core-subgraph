@@ -9,7 +9,6 @@ import { TokenExclusionManager as TokenExclusionManagerTemplate } from "../gener
 import { Rebalancing as RebalancingTemplate } from "../generated/templates";
 import { AssetManagementConfig as AssetManagementConfigTemplate } from "../generated/templates";
 import { FeeModule as FeeModuleTemplate } from "../generated/templates";
-import { VelvetSafeModule as VelvetSafeModuleTemplate } from "../generated/templates";
 
 export function handlePortfolioCreated(event: PortfolioInfoEvent): void {
   let entity = new PortfolioInfo(
@@ -66,5 +65,4 @@ export function handlePortfolioCreated(event: PortfolioInfoEvent): void {
     event.params.portfolioData.assetManagementConfig
   );
   FeeModuleTemplate.create(event.params.portfolioData.feeModule);
-  VelvetSafeModuleTemplate.create(event.params.portfolioData.gnosisModule);
 }

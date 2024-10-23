@@ -262,3 +262,80 @@ type UserRemovedFromWhitelist @entity(immutable: true) {
   blockTimestamp: BigInt!
   transactionHash: Bytes!
 }
+
+# REBALANCING events
+
+type UpdatedWeights @entity(immutable: true) {
+  id: ID!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type UpdatedTokens @entity(immutable: true) {
+  id: ID!
+  newTokens: [Bytes!]!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type PortfolioTokenRemoved @entity(immutable: true) {
+  id: ID!
+  token: Bytes!
+  vault: Bytes!
+  balance: BigInt!
+  atSnapshotId: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+# TOKEN EXCLUSION MANAGER events
+
+type UserRecordUpdated @entity(immutable: true) {
+  id: ID!
+  user: Bytes!
+  portfolioBalance: BigInt!
+  atSnapshotId: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type TokenRecordUpdated @entity(immutable: true) {
+  id: ID!
+  token: Bytes!
+  totalSupply: BigInt!
+  atSnapshotId: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type SnapShotCreated @entity(immutable: true) {
+  id: ID!
+  snapshotId: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type UserClaimedToken @entity(immutable: true) {
+  id: ID!
+  user: Bytes!
+  claimedAtId: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type UserClaimedTokenAtRange @entity(immutable: true) {
+  id: ID!
+  user: Bytes!
+  startId: BigInt!
+  endId: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}

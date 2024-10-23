@@ -66,10 +66,25 @@ templates:
       language: wasm/assemblyscript
       file: ./src/token-exclusion-manager.ts
       entities:
-        - TokenExcluded
+        - UserRecordUpdated
+        - TokenRecordUpdated
+        - SnapShotCreated
+        - UserClaimedToken
+        - UserClaimedTokenAtRange
       abis:
         - name: TokenExclusionManager
           file: ./abis/TokenExclusionManager.json
+      eventHandlers:
+        - event: UserRecordUpdated(indexed address,indexed uint256,indexed uint256)
+          handler: handleUserRecordUpdated
+        - event: TokenRecordUpdated(indexed address,indexed uint256,uint256)
+          handler: handleTokenRecordUpdated
+        - event: SnapShotCreated(indexed uint256)
+          handler: handleSnapShotCreated
+        - event: UserClaimedToken(indexed address,indexed uint256)
+          handler: handleUserClaimedToken
+        - event: UserClaimedTokenAtRange(indexed address,indexed uint256,indexed uint256)
+          handler: handleUserClaimedTokenAtRange
 
   - name: Rebalancing
     kind: ethereum/contract
@@ -82,10 +97,19 @@ templates:
       language: wasm/assemblyscript
       file: ./src/rebalancing.ts
       entities:
-        - RebalanceExecuted
+        - UpdatedWeights
+        - UpdatedTokens
+        - PortfolioTokenRemoved
       abis:
         - name: Rebalancing
           file: ./abis/Rebalancing.json
+      eventHandlers:
+        - event: UpdatedWeights()
+          handler: handleUpdatedWeights
+        - event: UpdatedTokens(address[])
+          handler: handleUpdatedTokens
+        - event: PortfolioTokenRemoved(indexed address,indexed address,indexed uint256,uint256)
+          handler: handlePortfolioTokenRemoved
 
   - name: AssetManagementConfig
     kind: ethereum/contract
@@ -179,19 +203,3 @@ templates:
           handler: handleManagementFeeCalculated
         - event: EntryExitFeeCharged(indexed uint256,indexed uint256)
           handler: handleEntryExitFeeCharged
-
-  - name: VelvetSafeModule
-    kind: ethereum/contract
-    network: base
-    source:
-      abi: VelvetSafeModule
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.7
-      language: wasm/assemblyscript
-      file: ./src/velvet-safe-module.ts
-      entities:
-        - ModuleSetUp
-      abis:
-        - name: VelvetSafeModule
-          file: ./abis/VelvetSafeModule.json
