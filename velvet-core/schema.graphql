@@ -1,0 +1,385 @@
+type PortfolioInfo @entity(immutable: true) {
+  id: ID!
+  portfolioData: PortfoliolInfo
+  portfolioId: BigInt!
+  name: String!
+  symbol: String!
+  owner: Bytes!
+  accessController: Bytes!
+  isPublicPortfolio: Boolean!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type PortfoliolInfo @entity {
+  id: ID!
+  portfolio: Bytes!
+  tokenExclusionManager: Bytes!
+  rebalancing: Bytes!
+  owner: Bytes!
+  assetManagementConfig: Bytes!
+  feeModule: Bytes!
+  vaultAddress: Bytes!
+  gnosisModule: Bytes!
+}
+
+type PortfolioFactory @entity {
+  id: ID!
+  portfolioInfoList: [PortfoliolInfo!]! # This represents the PortfolioInfolList
+  protocolConfig: Bytes!
+  portfolioCreationPause: Boolean!
+}
+
+type Transfer @entity {
+  id: ID!
+  from: Bytes!
+  to: Bytes!
+  value: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type Portfolio @entity {
+  id: ID!
+  name: String!
+  symbol: String!
+  owner: Bytes!
+  portfolio: Bytes! # This will store the address of the contract emitting the event
+  accessController: Bytes!
+  isPublicPortfolio: Boolean!
+  tokenExclusionManagerAddress: Bytes!
+  rebalancingAddress: Bytes!
+  assetManagementConfigAddress: Bytes!
+  feeModuleAddress: Bytes!
+}
+
+# --- PORTFOLIO EVENTS ---
+
+type PublicSwapEnabled @entity {
+  id: ID!
+  portfolio: Bytes!
+  timestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type Deposit @entity {
+  id: ID!
+  portfolio: Bytes!
+  user: Bytes!
+  mintedAmount: BigInt!
+  userBalanceAfterDeposit: BigInt!
+  timestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type Withdrawal @entity {
+  id: ID!
+  user: Bytes!
+  burnedAmount: BigInt!
+  portfolio: Bytes!
+  portfolioTokens: [Bytes!]!
+  userBalanceAfterWithdrawal: BigInt!
+  userWithdrawalAmounts: [BigInt!]!
+  timestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type UserDepositedAmount @entity {
+  id: ID!
+  portfolio: Bytes! # This will store the address of the contract emitting the event
+  depositedAmounts: [BigInt!]!
+  portfolioTokens: [Bytes!]!
+  timestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+# --- FEE MODULE EVENTS ---
+
+type FeesToBeMinted @entity(immutable: true) {
+  id: ID!
+  feeModule: Bytes! # This will store the address of the contract emitting the event
+  assetManagementTreasury: Bytes!
+  protocolTreasury: Bytes!
+  protocolFeeAmount: BigInt!
+  managerFeeAmount: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type ManagementFeeCalculated @entity(immutable: true) {
+  id: ID!
+  feeModule: Bytes! # This will store the address of the contract emitting the event
+  protocolStreamingFeeAmount: BigInt!
+  managementFeeAmount: BigInt!
+  protocolFeeCutAmount: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type EntryExitFeeCharged @entity(immutable: true) {
+  id: ID!
+  feeModule: Bytes! # This will store the address of the contract emitting the event
+  entryExitProtocolFeeAmount: BigInt!
+  entryExitAssetManagerFeeAmount: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+# --- ASSET MANAGEMENT CONFIG EVENTS ---
+
+type TransferabilityUpdated @entity(immutable: true) {
+  id: ID!
+  assetManagementConfigAddress: Bytes! # This will store the address of the contract emitting the event
+  transferable: Boolean!
+  publicTransfers: Boolean!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type ChangedPortfolioToPublic @entity(immutable: true) {
+  id: ID!
+  assetManagementConfigAddress: Bytes! # This will store the address of the contract emitting the event
+  isPublic: Boolean!
+  isTransferableToPublic: Boolean!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type MinPortfolioTokenHoldingAmountUpdated @entity(immutable: true) {
+  id: ID!
+  assetManagementConfigAddress: Bytes! # This will store the address of the contract emitting the event
+  minPortfolioTokenHoldingAmount: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type InitialPortfolioAmountUpdated @entity(immutable: true) {
+  id: ID!
+  assetManagementConfigAddress: Bytes! # This will store the address of the contract emitting the event
+  newInitialPortfolioAmount: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+# FeeManagement events
+type ProposeManagementFee @entity(immutable: true) {
+  id: ID!
+  assetManagementConfigAddress: Bytes! # This will store the address of the contract emitting the event
+  newManagementFee: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type ProposePerformanceFee @entity(immutable: true) {
+  id: ID!
+  assetManagementConfigAddress: Bytes! # This will store the address of the contract emitting the event
+  newPerformanceFee: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type ProposeEntryAndExitFee @entity(immutable: true) {
+  id: ID!
+  assetManagementConfigAddress: Bytes! # This will store the address of the contract emitting the event
+  newEntryFee: BigInt!
+  newExitFee: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type UpdateManagementFee @entity(immutable: true) {
+  id: ID!
+  assetManagementConfigAddress: Bytes! # This will store the address of the contract emitting the event
+  newManagementFee: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type UpdatePerformanceFee @entity(immutable: true) {
+  id: ID!
+  assetManagementConfigAddress: Bytes! # This will store the address of the contract emitting the event
+  newPerformanceFee: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type UpdateEntryAndExitFee @entity(immutable: true) {
+  id: ID!
+  assetManagementConfigAddress: Bytes! # This will store the address of the contract emitting the event
+  newEntryFee: BigInt!
+  newExitFee: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type DeleteProposedManagementFee @entity(immutable: true) {
+  id: ID!
+  assetManagementConfigAddress: Bytes! # This will store the address of the contract emitting the event
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type DeleteProposedPerformanceFee @entity(immutable: true) {
+  id: ID!
+  assetManagementConfigAddress: Bytes! # This will store the address of the contract emitting the event
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type DeleteProposedEntryAndExitFee @entity(immutable: true) {
+  id: ID!
+  assetManagementConfigAddress: Bytes! # This will store the address of the contract emitting the event
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+# TokenWhitelistManagement events
+type TokenWhitelisted @entity(immutable: true) {
+  id: ID!
+  assetManagementConfigAddress: Bytes! # This will store the address of the contract emitting the event
+  tokens: [Bytes!]!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type TokensRemovedFromWhitelist @entity(immutable: true) {
+  id: ID!
+  assetManagementConfigAddress: Bytes! # This will store the address of the contract emitting the event
+  tokens: [Bytes!]!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+# TreasuryManagement events
+type TreasuryUpdated @entity(immutable: true) {
+  id: ID!
+  assetManagementConfigAddress: Bytes! # This will store the address of the contract emitting the event
+  newTreasury: Bytes!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+# UserWhitelistManagement events
+type UserWhitelisted @entity(immutable: true) {
+  id: ID!
+  assetManagementConfigAddress: Bytes! # This will store the address of the contract emitting the event
+  users: [Bytes!]!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type UserRemovedFromWhitelist @entity(immutable: true) {
+  id: ID!
+  assetManagementConfigAddress: Bytes! # This will store the address of the contract emitting the event
+  users: [Bytes!]!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+# REBALANCING events
+
+type UpdatedWeights @entity(immutable: true) {
+  id: ID!
+  rebalancing: Bytes! # This will store the address of the contract emitting the event
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type UpdatedTokens @entity(immutable: true) {
+  id: ID!
+  rebalancing: Bytes! # This will store the address of the contract emitting the event
+  newTokens: [Bytes!]!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type PortfolioTokenRemoved @entity(immutable: true) {
+  id: ID!
+  rebalancing: Bytes! # This will store the address of the contract emitting the event
+  token: Bytes!
+  vault: Bytes!
+  balance: BigInt!
+  atSnapshotId: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+# TOKEN EXCLUSION MANAGER events
+
+type UserRecordUpdated @entity(immutable: true) {
+  id: ID!
+  tokenExclusionManager: Bytes! # This will store the address of the contract emitting the event
+  user: Bytes!
+  portfolioBalance: BigInt!
+  atSnapshotId: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type TokenRecordUpdated @entity(immutable: true) {
+  id: ID!
+  tokenExclusionManager: Bytes! # This will store the address of the contract emitting the event
+  token: Bytes!
+  totalSupply: BigInt!
+  atSnapshotId: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type SnapShotCreated @entity(immutable: true) {
+  id: ID!
+  tokenExclusionManager: Bytes! # This will store the address of the contract emitting the event
+  snapshotId: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type UserClaimedToken @entity(immutable: true) {
+  id: ID!
+  tokenExclusionManager: Bytes! # This will store the address of the contract emitting the event
+  user: Bytes!
+  claimedAtId: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type UserClaimedTokenAtRange @entity(immutable: true) {
+  id: ID!
+  tokenExclusionManager: Bytes! # This will store the address of the contract emitting the event
+  user: Bytes!
+  startId: BigInt!
+  endId: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}

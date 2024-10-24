@@ -1,0 +1,213 @@
+specVersion: 0.0.5
+
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: PortfolioFactory
+    network: base
+    source:
+      address: "0xf93659fb357899e092813bc3a2959ceDb3282a7f"
+      abi: PortfolioFactory
+      startBlock: 16686405
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - AdminChanged
+        - BeaconUpgraded
+        - Upgraded
+        - PortfolioInfo
+        - PortfolioCreated
+        - PortfolioCreationPaused
+      abis:
+        - name: PortfolioFactory
+          file: ./abis/PortfolioFactory.json
+      eventHandlers:
+        - event: PortfolioInfo((address,address,address,address,address,address,address,address),indexed uint256,string,string,indexed address,indexed address,bool)
+          handler: handlePortfolioCreated
+      file: ./src/portfolio-factory.ts
+
+templates:
+  - name: Portfolio
+    kind: ethereum/contract
+    network: base
+    source:
+      abi: Portfolio
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/portfolio.ts
+      entities:
+        - Transfer
+        - PublicSwapEnabled
+        - Deposit
+        - Withdrawal
+        - UserDepositedAmount
+      abis:
+        - name: Portfolio
+          file: ./abis/Portfolio.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+        - event: PublicSwapEnabled(indexed address)
+          handler: handlePublicSwapEnabled
+        - event: Deposited(indexed address,indexed address,indexed uint256,uint256)
+          handler: handleDeposited
+        - event: Withdrawn(indexed address,indexed uint256,indexed address,address[],uint256,uint256[])
+          handler: handleWithdrawn
+        - event: UserDepositedAmounts(uint256[],address[])
+          handler: handleUserDepositedAmounts
+
+  - name: TokenExclusionManager
+    kind: ethereum/contract
+    network: base
+    source:
+      abi: TokenExclusionManager
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/token-exclusion-manager.ts
+      entities:
+        - UserRecordUpdated
+        - TokenRecordUpdated
+        - SnapShotCreated
+        - UserClaimedToken
+        - UserClaimedTokenAtRange
+      abis:
+        - name: TokenExclusionManager
+          file: ./abis/TokenExclusionManager.json
+      eventHandlers:
+        - event: UserRecordUpdated(indexed address,indexed uint256,indexed uint256)
+          handler: handleUserRecordUpdated
+        - event: TokenRecordUpdated(indexed address,indexed uint256,uint256)
+          handler: handleTokenRecordUpdated
+        - event: SnapShotCreated(indexed uint256)
+          handler: handleSnapShotCreated
+        - event: UserClaimedToken(indexed address,indexed uint256)
+          handler: handleUserClaimedToken
+        - event: UserClaimedTokenAtRange(indexed address,indexed uint256,indexed uint256)
+          handler: handleUserClaimedTokenAtRange
+
+  - name: Rebalancing
+    kind: ethereum/contract
+    network: base
+    source:
+      abi: Rebalancing
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/rebalancing.ts
+      entities:
+        - UpdatedWeights
+        - UpdatedTokens
+        - PortfolioTokenRemoved
+      abis:
+        - name: Rebalancing
+          file: ./abis/Rebalancing.json
+      eventHandlers:
+        - event: UpdatedWeights()
+          handler: handleUpdatedWeights
+        - event: UpdatedTokens(address[])
+          handler: handleUpdatedTokens
+        - event: PortfolioTokenRemoved(indexed address,indexed address,indexed uint256,uint256)
+          handler: handlePortfolioTokenRemoved
+
+  - name: AssetManagementConfig
+    kind: ethereum/contract
+    network: base
+    source:
+      abi: AssetManagementConfig
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/asset-management-config.ts
+      entities:
+        - ChangedPortfolioToPublic
+        - DeleteProposedEntryAndExitFee
+        - DeleteProposedManagementFee
+        - DeleteProposedPerformanceFee
+        - InitialPortfolioAmountUpdated
+        - MinPortfolioTokenHoldingAmountUpdated
+        - ProposeEntryAndExitFee
+        - ProposeManagementFee
+        - ProposePerformanceFee
+        - TokenWhitelisted
+        - TokensRemovedFromWhitelist
+        - TransferabilityUpdated
+        - TreasuryUpdated
+        - UpdateEntryAndExitFee
+        - UpdateManagementFee
+        - UpdatePerformanceFee
+        - UserRemovedFromWhitelist
+        - UserWhitelisted
+      abis:
+        - name: AssetManagementConfig
+          file: ./abis/AssetManagementConfig.json
+      eventHandlers:
+        - event: ChangedPortfolioToPublic(indexed bool,indexed bool)
+          handler: handleChangedPortfolioToPublic
+        - event: DeleteProposedEntryAndExitFee()
+          handler: handleDeleteProposedEntryAndExitFee
+        - event: DeleteProposedManagementFee()
+          handler: handleDeleteProposedManagementFee
+        - event: DeleteProposedPerformanceFee()
+          handler: handleDeleteProposedPerformanceFee
+        - event: InitialPortfolioAmountUpdated(indexed uint256)
+          handler: handleInitialPortfolioAmountUpdated
+        - event: MinPortfolioTokenHoldingAmountUpdated(indexed uint256)
+          handler: handleMinPortfolioTokenHoldingAmountUpdated
+        - event: ProposeEntryAndExitFee(indexed uint256,indexed uint256)
+          handler: handleProposeEntryAndExitFee
+        - event: ProposeManagementFee(indexed uint256)
+          handler: handleProposeManagementFee
+        - event: ProposePerformanceFee(indexed uint256)
+          handler: handleProposePerformanceFee
+        - event: TokenWhitelisted(address[])
+          handler: handleTokenWhitelisted
+        - event: TokensRemovedFromWhitelist(address[])
+          handler: handleTokensRemovedFromWhitelist
+        - event: TransferabilityUpdated(indexed bool,indexed bool)
+          handler: handleTransferabilityUpdated
+        - event: TreasuryUpdated(indexed address)
+          handler: handleTreasuryUpdated
+        - event: UpdateEntryAndExitFee(indexed uint256,indexed uint256)
+          handler: handleUpdateEntryAndExitFee
+        - event: UpdateManagementFee(indexed uint256)
+          handler: handleUpdateManagementFee
+        - event: UpdatePerformanceFee(indexed uint256)
+          handler: handleUpdatePerformanceFee
+        - event: UserRemovedFromWhitelist(address[])
+          handler: handleUserRemovedFromWhitelist
+        - event: UserWhitelisted(address[])
+          handler: handleUserWhitelisted
+
+  - name: FeeModule
+    kind: ethereum/contract
+    network: base
+    source:
+      abi: FeeModule
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/fee-module.ts
+      entities:
+        - FeesToBeMinted
+        - ManagementFeeCalculated
+        - EntryExitFeeCharged
+      abis:
+        - name: FeeModule
+          file: ./abis/FeeModule.json
+      eventHandlers:
+        - event: FeesToBeMinted(indexed address,indexed address,indexed uint256,uint256)
+          handler: handleFeesToBeMinted
+        - event: ManagementFeeCalculated(indexed uint256,indexed uint256,indexed uint256)
+          handler: handleManagementFeeCalculated
+        - event: EntryExitFeeCharged(indexed uint256,indexed uint256)
+          handler: handleEntryExitFeeCharged
