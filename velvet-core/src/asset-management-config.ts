@@ -46,6 +46,8 @@ export function handleTransferabilityUpdated(
   let entity = new TransferabilityUpdated(
     event.transaction.hash.concatI32(event.logIndex.toI32()).toHexString()
   );
+  entity.assetManagementConfigAddress = event.address;
+
   entity.transferable = event.params._transferable;
   entity.publicTransfers = event.params._publicTransfers;
   entity.blockNumber = event.block.number;
@@ -60,6 +62,7 @@ export function handleChangedPortfolioToPublic(
   let entity = new ChangedPortfolioToPublic(
     event.transaction.hash.concatI32(event.logIndex.toI32()).toHexString()
   );
+  entity.assetManagementConfigAddress = event.address;
   entity.isPublic = event.params.isPublic;
   entity.isTransferableToPublic = event.params.isTransferableToPublic;
   entity.blockNumber = event.block.number;
@@ -74,6 +77,7 @@ export function handleMinPortfolioTokenHoldingAmountUpdated(
   let entity = new MinPortfolioTokenHoldingAmountUpdated(
     event.transaction.hash.concatI32(event.logIndex.toI32()).toHexString()
   );
+  entity.assetManagementConfigAddress = event.address;
   entity.minPortfolioTokenHoldingAmount =
     event.params._minPortfolioTokenHoldingAmount;
   entity.blockNumber = event.block.number;
@@ -88,6 +92,7 @@ export function handleInitialPortfolioAmountUpdated(
   let entity = new InitialPortfolioAmountUpdated(
     event.transaction.hash.concatI32(event.logIndex.toI32()).toHexString()
   );
+  entity.assetManagementConfigAddress = event.address;
   entity.newInitialPortfolioAmount = event.params._newInitialPortfolioAmount;
   entity.blockNumber = event.block.number;
   entity.blockTimestamp = event.block.timestamp;
@@ -101,6 +106,7 @@ export function handleProposeManagementFee(
   let entity = new ProposeManagementFee(
     event.transaction.hash.concatI32(event.logIndex.toI32()).toHexString()
   );
+  entity.assetManagementConfigAddress = event.address;
   entity.newManagementFee = event.params.newManagementFee;
   entity.blockNumber = event.block.number;
   entity.blockTimestamp = event.block.timestamp;
@@ -114,6 +120,7 @@ export function handleProposePerformanceFee(
   let entity = new ProposePerformanceFee(
     event.transaction.hash.concatI32(event.logIndex.toI32()).toHexString()
   );
+  entity.assetManagementConfigAddress = event.address;
   entity.newPerformanceFee = event.params.newPerformanceFee;
   entity.blockNumber = event.block.number;
   entity.blockTimestamp = event.block.timestamp;
@@ -127,6 +134,7 @@ export function handleProposeEntryAndExitFee(
   let entity = new ProposeEntryAndExitFee(
     event.transaction.hash.concatI32(event.logIndex.toI32()).toHexString()
   );
+  entity.assetManagementConfigAddress = event.address;
   entity.newEntryFee = event.params.newEntryFee;
   entity.newExitFee = event.params.newExitFee;
   entity.blockNumber = event.block.number;
@@ -141,6 +149,7 @@ export function handleUpdateManagementFee(
   let entity = new UpdateManagementFee(
     event.transaction.hash.concatI32(event.logIndex.toI32()).toHexString()
   );
+  entity.assetManagementConfigAddress = event.address;
   entity.newManagementFee = event.params.newManagementFee;
   entity.blockNumber = event.block.number;
   entity.blockTimestamp = event.block.timestamp;
@@ -154,6 +163,7 @@ export function handleUpdatePerformanceFee(
   let entity = new UpdatePerformanceFee(
     event.transaction.hash.concatI32(event.logIndex.toI32()).toHexString()
   );
+  entity.assetManagementConfigAddress = event.address;
   entity.newPerformanceFee = event.params.newPerformanceFee;
   entity.blockNumber = event.block.number;
   entity.blockTimestamp = event.block.timestamp;
@@ -167,6 +177,7 @@ export function handleUpdateEntryAndExitFee(
   let entity = new UpdateEntryAndExitFee(
     event.transaction.hash.concatI32(event.logIndex.toI32()).toHexString()
   );
+  entity.assetManagementConfigAddress = event.address;
   entity.newEntryFee = event.params.newEntryFee;
   entity.newExitFee = event.params.newExitFee;
   entity.blockNumber = event.block.number;
@@ -181,6 +192,7 @@ export function handleDeleteProposedManagementFee(
   let entity = new DeleteProposedManagementFee(
     event.transaction.hash.concatI32(event.logIndex.toI32()).toHexString()
   );
+  entity.assetManagementConfigAddress = event.address;
   entity.blockNumber = event.block.number;
   entity.blockTimestamp = event.block.timestamp;
   entity.transactionHash = event.transaction.hash;
@@ -193,6 +205,7 @@ export function handleDeleteProposedPerformanceFee(
   let entity = new DeleteProposedPerformanceFee(
     event.transaction.hash.concatI32(event.logIndex.toI32()).toHexString()
   );
+  entity.assetManagementConfigAddress = event.address;
   entity.blockNumber = event.block.number;
   entity.blockTimestamp = event.block.timestamp;
   entity.transactionHash = event.transaction.hash;
@@ -205,6 +218,7 @@ export function handleDeleteProposedEntryAndExitFee(
   let entity = new DeleteProposedEntryAndExitFee(
     event.transaction.hash.concatI32(event.logIndex.toI32()).toHexString()
   );
+  entity.assetManagementConfigAddress = event.address;
   entity.blockNumber = event.block.number;
   entity.blockTimestamp = event.block.timestamp;
   entity.transactionHash = event.transaction.hash;
@@ -215,6 +229,7 @@ export function handleTokenWhitelisted(event: TokenWhitelistedEvent): void {
   let entity = new TokenWhitelisted(
     event.transaction.hash.concatI32(event.logIndex.toI32()).toHexString()
   );
+  entity.assetManagementConfigAddress = event.address;
   entity.tokens = event.params.tokens.map<Bytes>((t) => t);
   entity.blockNumber = event.block.number;
   entity.blockTimestamp = event.block.timestamp;
@@ -228,6 +243,7 @@ export function handleTokensRemovedFromWhitelist(
   let entity = new TokensRemovedFromWhitelist(
     event.transaction.hash.concatI32(event.logIndex.toI32()).toHexString()
   );
+  entity.assetManagementConfigAddress = event.address;
   entity.tokens = event.params.tokens.map<Bytes>((t) => t);
   entity.blockNumber = event.block.number;
   entity.blockTimestamp = event.block.timestamp;
@@ -239,6 +255,7 @@ export function handleTreasuryUpdated(event: TreasuryUpdatedEvent): void {
   let entity = new TreasuryUpdated(
     event.transaction.hash.concatI32(event.logIndex.toI32()).toHexString()
   );
+  entity.assetManagementConfigAddress = event.address;
   entity.newTreasury = event.params.newTreasury;
   entity.blockNumber = event.block.number;
   entity.blockTimestamp = event.block.timestamp;
@@ -250,6 +267,7 @@ export function handleUserWhitelisted(event: UserWhitelistedEvent): void {
   let entity = new UserWhitelisted(
     event.transaction.hash.concatI32(event.logIndex.toI32()).toHexString()
   );
+  entity.assetManagementConfigAddress = event.address;
   entity.users = event.params.users.map<Bytes>((u) => u);
   entity.blockNumber = event.block.number;
   entity.blockTimestamp = event.block.timestamp;
@@ -263,6 +281,7 @@ export function handleUserRemovedFromWhitelist(
   let entity = new UserRemovedFromWhitelist(
     event.transaction.hash.concatI32(event.logIndex.toI32()).toHexString()
   );
+  entity.assetManagementConfigAddress = event.address;
   entity.users = event.params.users.map<Bytes>((u) => u);
   entity.blockNumber = event.block.number;
   entity.blockTimestamp = event.block.timestamp;

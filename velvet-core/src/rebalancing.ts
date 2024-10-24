@@ -14,6 +14,7 @@ export function handleUpdatedWeights(event: UpdatedWeightsEvent): void {
   let entity = new UpdatedWeights(
     event.transaction.hash.concatI32(event.logIndex.toI32()).toHexString()
   );
+  entity.rebalancing = event.address;
   entity.blockNumber = event.block.number;
   entity.blockTimestamp = event.block.timestamp;
   entity.transactionHash = event.transaction.hash;
@@ -25,6 +26,7 @@ export function handleUpdatedTokens(event: UpdatedTokensEvent): void {
   let entity = new UpdatedTokens(
     event.transaction.hash.concatI32(event.logIndex.toI32()).toHexString()
   );
+  entity.rebalancing = event.address;
   entity.newTokens = event.params.newTokens.map<Bytes>(
     (address: Address) => address as Bytes
   );
@@ -41,6 +43,7 @@ export function handlePortfolioTokenRemoved(
   let entity = new PortfolioTokenRemoved(
     event.transaction.hash.concatI32(event.logIndex.toI32()).toHexString()
   );
+  entity.rebalancing = event.address;
   entity.token = event.params.token;
   entity.vault = event.params.vault;
   entity.balance = event.params.balance;

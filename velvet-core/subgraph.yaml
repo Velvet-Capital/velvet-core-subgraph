@@ -19,6 +19,8 @@ dataSources:
         - BeaconUpgraded
         - Upgraded
         - PortfolioInfo
+        - PortfolioCreated
+        - PortfolioCreationPaused
       abis:
         - name: PortfolioFactory
           file: ./abis/PortfolioFactory.json
@@ -40,6 +42,10 @@ templates:
       file: ./src/portfolio.ts
       entities:
         - Transfer
+        - PublicSwapEnabled
+        - Deposit
+        - Withdrawal
+        - UserDepositedAmount
       abis:
         - name: Portfolio
           file: ./abis/Portfolio.json
@@ -192,7 +198,9 @@ templates:
       language: wasm/assemblyscript
       file: ./src/fee-module.ts
       entities:
-        - FeesCollected
+        - FeesToBeMinted
+        - ManagementFeeCalculated
+        - EntryExitFeeCharged
       abis:
         - name: FeeModule
           file: ./abis/FeeModule.json

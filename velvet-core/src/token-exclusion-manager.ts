@@ -17,6 +17,7 @@ export function handleUserRecordUpdated(event: UserRecordUpdatedEvent): void {
   let entity = new UserRecordUpdated(
     event.transaction.hash.concatI32(event.logIndex.toI32()).toHexString()
   );
+  entity.tokenExclusionManager = event.address;
   entity.user = event.params.user;
   entity.portfolioBalance = event.params.portfolioBalance;
   entity.atSnapshotId = event.params.atSnapshotId;
@@ -31,6 +32,7 @@ export function handleTokenRecordUpdated(event: TokenRecordUpdatedEvent): void {
   let entity = new TokenRecordUpdated(
     event.transaction.hash.concatI32(event.logIndex.toI32()).toHexString()
   );
+  entity.tokenExclusionManager = event.address;
   entity.token = event.params.token;
   entity.totalSupply = event.params.totalSupply;
   entity.atSnapshotId = event.params.atSnapshotId;
@@ -45,6 +47,7 @@ export function handleSnapShotCreated(event: SnapShotCreatedEvent): void {
   let entity = new SnapShotCreated(
     event.transaction.hash.concatI32(event.logIndex.toI32()).toHexString()
   );
+  entity.tokenExclusionManager = event.address;
   entity.snapshotId = event.params.snapshotId;
   entity.blockNumber = event.block.number;
   entity.blockTimestamp = event.block.timestamp;
@@ -57,6 +60,7 @@ export function handleUserClaimedToken(event: UserClaimedTokenEvent): void {
   let entity = new UserClaimedToken(
     event.transaction.hash.concatI32(event.logIndex.toI32()).toHexString()
   );
+  entity.tokenExclusionManager = event.address;
   entity.user = event.params.user;
   entity.claimedAtId = event.params.claimedAtId;
   entity.blockNumber = event.block.number;
@@ -72,6 +76,7 @@ export function handleUserClaimedTokenAtRange(
   let entity = new UserClaimedTokenAtRange(
     event.transaction.hash.concatI32(event.logIndex.toI32()).toHexString()
   );
+  entity.tokenExclusionManager = event.address;
   entity.user = event.params.user;
   entity.startId = event.params.startId;
   entity.endId = event.params.endId;

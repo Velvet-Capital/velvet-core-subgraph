@@ -13,6 +13,7 @@ export function handleFeesToBeMinted(event: FeesToBeMintedEvent): void {
   let entity = new FeesToBeMinted(
     event.transaction.hash.concatI32(event.logIndex.toI32()).toHexString()
   );
+  entity.feeModule = event.address;
   entity.assetManagementTreasury = event.params.assetManagementTreasury;
   entity.protocolTreasury = event.params.protocolTreasury;
   entity.protocolFeeAmount = event.params.protocolFeeAmount;
@@ -31,6 +32,7 @@ export function handleManagementFeeCalculated(
   let entity = new ManagementFeeCalculated(
     event.transaction.hash.concatI32(event.logIndex.toI32()).toHexString()
   );
+  entity.feeModule = event.address;
   entity.protocolStreamingFeeAmount = event.params.protocolStreamingFeeAmount;
   entity.managementFeeAmount = event.params.managementFeeAmount;
   entity.protocolFeeCutAmount = event.params.protocolFeeCutAmount;
@@ -48,6 +50,7 @@ export function handleEntryExitFeeCharged(
   let entity = new EntryExitFeeCharged(
     event.transaction.hash.concatI32(event.logIndex.toI32()).toHexString()
   );
+  entity.feeModule = event.address;
   entity.entryExitProtocolFeeAmount = event.params.entryExitProtocolFeeAmount;
   entity.entryExitAssetManagerFeeAmount =
     event.params.entryExitAssetManagerFeeAmount;

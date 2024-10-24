@@ -78,6 +78,7 @@ export function handleUserDepositedAmounts(
   let entity = new UserDepositedAmount(
     event.transaction.hash.concatI32(event.logIndex.toI32()).toHexString()
   );
+  entity.portfolio = event.address;
   entity.depositedAmounts = event.params.depositedAmounts;
   entity.portfolioTokens = event.params.portfolioTokens.map<Bytes>(
     (address) => address as Bytes
